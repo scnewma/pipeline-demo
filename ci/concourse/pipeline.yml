@@ -29,24 +29,28 @@ jobs:
     params:
       repository: updated-version
 
+- name: build-and-upload
+  serial: true
+  public: false
+  plan:
+  - aggregate:
+    - get: repo
+    - get: version
+      resource: version
+      passed:
+      - generate-version
+      trigger: true
+  - task: build-and-upload
+    file: repo/ci/concourse/tasks/build-and-upload/task.yml
+    params:
+      <<: *common-params
+  - put: repo
+    params:
+      repository: out
+      tag: out/tag
+      only_tag: true
 
-#- name: build-and-upload
-#  serial: true
-#  public: false
-#  plan:
-#  - aggregate:
-#    - get: repo
-#    - get: version
-#      resource: version
-#      passed:
-#      - generate-version
-#      trigger: true
-#  - task: build-and-upload
-#    file: repo/ci/concourse/tasks/build-and-upload/task.yml
-#    params:
-#      <<: *common-params
-#  - put: repo
-#    params:
-#      repository: out
-#      tag: out/tag
-#      only_tag: true
+common-params: &common-params
+  _JAVA_OPTIONS: -Djava.security.edg=file:/dev/./urandom
+  GIT_EMAIL: ((git-email))
+  GIT_NAME: ((git-name))
