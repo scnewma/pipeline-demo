@@ -20,11 +20,14 @@ public class SmokeTests {
     @Value("${application.host:localhost:8081}")
     private String applicationHost;
 
+    @Value("${test.timeout:60}")
+    private int timeout;
+
     TestRestTemplate restTemplate = new TestRestTemplate();
 
     @Test
     public void canSayHello() {
-        await().atMost(60, SECONDS).untilAsserted(() -> {
+        await().atMost(this.timeout, SECONDS).untilAsserted(() -> {
             ResponseEntity<String> responseEntity = this.restTemplate
                     .getForEntity(buildUrl("/hello/shaun"), String.class);
 
