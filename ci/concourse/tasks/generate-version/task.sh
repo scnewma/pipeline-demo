@@ -2,7 +2,8 @@
 
 set -e -u
 
-VERSION="$(date +%Y%m%d_%H%M%S).$(git log -n 1 --pretty=format:'%h')"
+VERSION=1.0.0.M1-`date +%Y%m%d_%H%M%S`-VERSION
+#VERSION="$(date +%Y%m%d_%H%M%S).$(git log -n 1 --pretty=format:'%h')"
 
 git clone version updated-version
 pushd updated-version

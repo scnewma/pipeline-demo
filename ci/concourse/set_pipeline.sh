@@ -1,3 +1,3 @@
 #!/bin/bash
 
-fly -n -t docker sp -p pipeline-demo -c pipeline.yml -l params.yml
+fly -t docker sp -n -p pipeline-demo -c pipeline.yml -l params.yml
